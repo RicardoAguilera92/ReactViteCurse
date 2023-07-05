@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../Context";
+import OrderCard from "../../Components/OrderCard";
 import "./styles.css";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 const CheckoutSideMenu = () => {
   const context = useContext(ShoppingCartContext);
-
 
   return (
     <aside
@@ -21,6 +21,16 @@ const CheckoutSideMenu = () => {
             onClick={() => context.closeCheckoutSideMenu()}
           />
         </div>
+      </div>
+      ,<div className="px-6">
+      {context.cartProducts.map((product) => (
+        <OrderCard
+          key={product.id}
+          title={product.title}
+          imageUrl={product.image}
+          price={product.price}
+        />
+      ))}
       </div>
     </aside>
   );
