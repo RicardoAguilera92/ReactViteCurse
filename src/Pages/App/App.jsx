@@ -33,17 +33,4 @@ const App = () => {
   );
 };
 
-// function App() {
-//   return (
-//     <div className="bg-red-100">
-//       <Home />
-//       <MyAccount />
-//       <MyOrder />
-//       <MyOrders />
-//       <NotFound />
-//       <SignIn />
-//     </div>
-//   );
-// }
-
 export default App;
