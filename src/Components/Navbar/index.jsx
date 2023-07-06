@@ -1,8 +1,7 @@
 import { useContext } from "react";
-import { ShoppingCartIcon } from '@heroicons/react/24/solid'
+import { ShoppingCartIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context";
-
 
 const Navbar = () => {
   const context = useContext(ShoppingCartContext);
@@ -17,6 +16,7 @@ const Navbar = () => {
         <li>
           <NavLink
             to="/"
+            onClick={() => context.setSearchByCategory()}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             All
@@ -24,15 +24,8 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to="/clothes"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Clothes
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
             to="/electronics"
+            onClick={() => context.setSearchByCategory("electronics")}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             Electronics
@@ -40,26 +33,29 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to="/fornitures"
+            to="/jewelery"
+            onClick={() => context.setSearchByCategory("jewelery")}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            Fornitures
+            Jewelery
           </NavLink>
         </li>
         <li>
           <NavLink
-            to="/toys"
+            to="/mens-clothing"
+            onClick={() => context.setSearchByCategory("men's clothing")}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            Toys
+            Men's Clothing
           </NavLink>
         </li>
         <li>
           <NavLink
-            to="/others"
+            to="/womens-clothing"
+            onClick={() => context.setSearchByCategory("women's clothing")}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            Others
+            Women's Clothing
           </NavLink>
         </li>
       </ul>
@@ -90,9 +86,8 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li className="flex items-center">
-        <ShoppingCartIcon className="h-6 w-6 text-black-500 " />
-        <div>{context.count}</div>
-          
+          <ShoppingCartIcon className="h-6 w-6 text-black-500 " />
+          <div>{context.cartProducts.length}</div>
         </li>
       </ul>
     </nav>
