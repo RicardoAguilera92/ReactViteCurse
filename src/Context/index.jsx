@@ -2,8 +2,35 @@ import { createContext, useState, useEffect } from "react";
 
 export const ShoppingCartContext = createContext();
 
+export const initializeLocalStorage = () => {
+  const accountInLocalStorage = localStorage.getItem("account");
+  const signOutInLocalStorage = localStorage.gertItem("sign-out");
+  let parsedAccount;
+  let parsedSignOut;
+
+  if (!accountInLocalStorage) {
+    localStorage.setItem("account", JSON.stringify({}));
+    parsedAccount = {};
+  } else {
+    parsedAccount = JSON.parse(accountInLocalStorage);
+  }
+
+  if (!signOutInLocalStorage) {
+    localStorage.setItem("sign-out", JSON.stringify(false));
+    parsedSignOut = false;
+  } else {
+    parsedSignOut = JSON.parse(signOutInLocalStorage);
+  }
+};
+
 export const ShoppingCartProvider = ({ children }) => {
   const [count, setCount] = useState(0);
+
+  //My account
+  const [account, setAccount] = useState({});
+
+  //Sign Out
+  const [signOut, setSignOut] = useState(false);
 
   //Product Detail Open/Close
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
@@ -33,7 +60,6 @@ export const ShoppingCartProvider = ({ children }) => {
 
   //Get products by category
   const [searchByCategory, setSearchByCategory] = useState(null);
- 
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -94,7 +120,7 @@ export const ShoppingCartProvider = ({ children }) => {
     if (!searchByTitle && !searchByCategory)
       setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory));
   }, [items, searchByTitle, searchByCategory]);
-  
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -119,6 +145,10 @@ export const ShoppingCartProvider = ({ children }) => {
         filteredItems,
         searchByCategory,
         setSearchByCategory,
+        account,
+        setAccount,
+        signOut,
+        setSignOut,
       }}
     >
       {children}
