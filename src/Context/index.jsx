@@ -4,7 +4,7 @@ export const ShoppingCartContext = createContext();
 
 export const initializeLocalStorage = () => {
   const accountInLocalStorage = localStorage.getItem("account");
-  const signOutInLocalStorage = localStorage.gertItem("sign-out");
+  const signOutInLocalStorage = localStorage.getItem("sign-out");
   let parsedAccount;
   let parsedSignOut;
 
@@ -24,41 +24,42 @@ export const initializeLocalStorage = () => {
 };
 
 export const ShoppingCartProvider = ({ children }) => {
-  const [count, setCount] = useState(0);
-
-  //My account
+  // My account
   const [account, setAccount] = useState({});
 
-  //Sign Out
+  // Sign out
   const [signOut, setSignOut] = useState(false);
 
-  //Product Detail Open/Close
+  // Shopping Cart · Increment quantity
+  const [count, setCount] = useState(0);
+
+  // Product Detail · Open/Close
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
   const openProductDetail = () => setIsProductDetailOpen(true);
   const closeProductDetail = () => setIsProductDetailOpen(false);
 
-  //Checkout  Open/Close
+  // Checkout Side Menu · Open/Close
   const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] = useState(false);
   const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
   const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
 
-  //Product Detail Show Product
+  // Product Detail · Show product
   const [productToShow, setProductToShow] = useState({});
 
-  //Shopping Cart
+  // Shopping Cart · Add products to cart
   const [cartProducts, setCartProducts] = useState([]);
 
-  //Shopping cart Order
+  // Shopping Cart · Order
   const [order, setOrder] = useState([]);
 
-  //GetProducts
+  // Get products
   const [items, setItems] = useState(null);
   const [filteredItems, setFilteredItems] = useState(null);
 
-  //Get products by title
+  // Get products by title
   const [searchByTitle, setSearchByTitle] = useState(null);
 
-  //Get products by category
+  // Get products by category
   const [searchByCategory, setSearchByCategory] = useState(null);
 
   useEffect(() => {
