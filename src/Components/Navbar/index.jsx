@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { ShoppingCartIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context";
+import ShoppingCart from "../ShoppingCart";
 
 const Navbar = () => {
   const context = useContext(ShoppingCartContext);
@@ -12,6 +12,18 @@ const Navbar = () => {
   const parsedSignOut = JSON.parse(signOut);
   const isUserSignOut = context.signOut || parsedSignOut;
 
+  // Account
+  const account = localStorage.getItem("account");
+  const parsedAccount = JSON.parse(account);
+  // Has an account
+  const noAccountInLocalStorage = parsedAccount
+    ? Object.keys(parsedAccount).length === 0
+    : true;
+  const noAccountInLocalState = context.account
+    ? Object.keys(context.account).length === 0
+    : true;
+  const hasUserAnAccount = !noAccountInLocalStorage || !noAccountInLocalState;
+
   const handleSignOut = () => {
     const stringifedSignOut = JSON.stringify(true);
     localStorage.setItem("sign-out", stringifedSignOut);
@@ -19,22 +31,10 @@ const Navbar = () => {
   };
 
   const renderView = () => {
-    if (isUserSignOut) {
-      return (
-        <li>
-          <NavLink
-            to="/sign-in"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-            onClick={() => handleSignOut()}
-          >
-            Sign out
-          </NavLink>
-        </li>
-      );
-    } else {
+    if (hasUserAnAccount && !isUserSignOut) {
       return (
         <>
-          <li className="text-black/60">teff@platzi.com</li>
+          <li className="text-black/60">{parsedAccount?.email}</li>
           <li>
             <NavLink
               to="/my-orders"
@@ -62,6 +62,18 @@ const Navbar = () => {
           </li>
         </>
       );
+    } else {
+      return (
+        <li>
+          <NavLink
+            to="/sign-in"
+            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            onClick={() => handleSignOut()}
+          >
+            Sign in
+          </NavLink>
+        </li>
+      );
     }
   };
 
@@ -69,7 +81,7 @@ const Navbar = () => {
     <nav className="flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light bg-white">
       <ul className="flex items-center gap-3">
         <li className="font-semibold text-lg">
-          <NavLink to="/">Shopi</NavLink>
+          <NavLink to={`${isUserSignOut ? "?sign-in" : "/"}`}>Shopi</NavLink>
         </li>
         <li>
           <NavLink
@@ -120,8 +132,7 @@ const Navbar = () => {
       <ul className="flex items-center gap-3">
         {renderView()}
         <li className="flex items-center">
-          <ShoppingCartIcon className="h-6 w-6 text-black"></ShoppingCartIcon>
-          <div>{context.cartProducts.length}</div>
+          <ShoppingCart />
         </li>
       </ul>
     </nav>
